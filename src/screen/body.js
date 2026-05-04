@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {View, Text, Image, TouchableHighlight, TextInput} from 'react-native';
+import { styles } from '../stylesheet/style';
 
-function body() {
+function Body() {
     let Names = ['Tony Soprano', 
         'Randy Random',
         'Medic',
@@ -62,7 +63,9 @@ function body() {
         }
     }
     return(
-        <View></View>   
+        <View id='body' style={styles.body}>
+            <Text>TEST</Text>
+        </View>   
     );
 }
-export {body};
+export {Body};

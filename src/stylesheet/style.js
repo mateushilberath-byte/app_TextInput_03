@@ -12,11 +12,12 @@ const styles = StyleSheet.create({
     head: {
         backgroundColor: '#101aab',
         height: 250,
-        width: 650,
+        width: '95%',
         borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginBottom: '2%'
     },
     title: {
         fontSize: 40,
@@ -26,6 +27,13 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 25,
         color: 'white'
+    },
+    body: {
+        backgroundColor:'#2a61d7',
+        height: '60%',
+        width: '95%',
+        alignContent: 'center',
+        borderRadius: 10
     },
     foot: {
         backgroundColor: '#1c1c1c',
