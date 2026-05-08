@@ -1,70 +1,99 @@
 import React, { useState } from 'react';
-import {View, Text, Image, TouchableHighlight, TextInput} from 'react-native';
+import {View, Text, Image, TouchableHighlight, TextInput, Alert} from 'react-native';
 import { styles } from '../stylesheet/style';
 
-function Body() {
-    let Names = ['Tony Soprano', 
+const Names = ['Tony Soprano', 
         'Randy Random',
         'Medic',
         '2-D',
         'Acrid',
+        'Dominus Thrax',
+        'Teeth',
+        'Travis Touchdown',
+        'Adam the Clown'
     ]
-    let GuessImg = ['./img/guess/img1.png',
-        './img/guess/img2.png',
-        './img/guess/img3.png',
-        './img/guess/img4.png',
-        './img/guess/img5.png'
+    const GuessImg = [require('../../img/guess/img1.png'),
+        require('../../img/guess/img2.png'),
+        require('../../img/guess/img3.png'),
+        require('../../img/guess/img4.png'),
+        require('../../img/guess/img5.png'),
+        require('../../img/guess/img6.png'),
+        require('../../img/guess/img7.png'),
+        require('../../img/guess/img8.png'),
+        require('../../img/guess/img9.png')
     ]
-    let RevealImg = ['./img/reveal/img1.png',
-        './img/reveal/img2.png',
-        './img/reveal/img3.png',
-        './img/reveal/img4.png',
-        './img/reveal/img5.png'
+    const RevealImg = [require('../../img/reveal/img1.png'),
+        require('../../img/reveal/img2.png'),
+        require('../../img/reveal/img3.png'),
+        require('../../img/reveal/img4.png'),
+        require('../../img/reveal/img5.png'),
+        require('../../img/reveal/img6.png'),
+        require('../../img/reveal/img7.png'),
+        require('../../img/reveal/img8.png'),
+        require('../../img/reveal/img9.png')
     ]
-    let copynames = [...Names];
     
-    let NumInit = Math.floor(Math.random() * Names.length);
-    let IsCorrect = false;
-    let AnswerInput;
-    let WinCounter = 0;
-    let LoseCounter= 0;
-    let GameOver = false;
+function Body() {
 
-    const [imgGuess, setImgGuess] = useState(GuessImg[NumInit]);
-    const [Answer, setAnswer] = useState(Names[NumInit]);
+    const [copynames, setCopyNames] = useState([...Names]);
+    const [Index, setIndex] = useState(Math.floor(Math.random() * copynames.length));
+    const [imgGuess, setImgGuess] = useState(GuessImg[Index]);
+    const [Answer, setAnswer] = useState(Names[Index]);
+    const [AnswerInput, setInput] = useState('');
+    const [CorrectGuess, setGuess] = useState(false);
+    const [IsGameOver, setGameOver] = useState(false);
+    const [WinCounter, setWinCounter] = useState(0);
+    const [LoseCounter, setLoseCounter] = useState(0);
 
     function CheckGuess() {
         if (AnswerInput == Answer) {
-            setImgGuess(RevealImg[NumInit]);
-            IsCorrect = true;
-            WinCounter++;
+            setImgGuess(RevealImg[Index]);
+            setGuess(true);
+            setWinCounter(prev => prev+1);
         }
-        else if (IsCorrect == true) {
-        alert('Você já adivinhou, passe para o próximo personagem!')
+        else if (CorrectGuess == true) {
+        Alert.alert('Você já adivinhou, passe para o próximo personagem!')
         }
     }
     function ChangeChar() {
-        let splicename = copynames.splice(NumInit)[0];
-        NumInit = Math.floor(Math.random() * copynames.length);
-        if (IsCorrect == true) {
-            setImgGuess(GuessImg[NumInit]);
-            setAnswer(Names[NumInit]);
-            IsCorrect = false;
+        const NewCopy = copynames.filter((_, i) => i !== Index)
+        if (WinCounter + LoseCounter == Names.length) {
+            setGameOver(true);
+        }
+        const nextIndex = Math.floor(Math.random() * NewCopy.length);
+        setIndex(nextIndex);
+        if (CorrectGuess == true) {
+            setImgGuess(GuessImg[nextIndex]);
+            setAnswer(copynames[nextIndex]);
+            setGuess(false);
         }
         else {
-            LoseCounter++;
-            setImgGuess(GuessImg[NumInit]);
-            setAnswer(copynames[NumInit]);
+            setLoseCounter(prev => prev+1);
+            setImgGuess(GuessImg[nextIndex]);
+            setAnswer(copynames[nextIndex]);
         }
+        setInput('');
     }
-    function CheckGameOver() {
-        if ((WinCounter + LoseCounter) == Names.length) {
-            GameOver = true;
-        }
-    }
+    
     return(
         <View id='body' style={styles.body}>
-            <Text>TEST</Text>
+            <Text style={{fontSize: 23, paddingVertical: 20}}>Advinhe o personagem.</Text>
+            <Image style={styles.img} source={imgGuess}/>
+            <TextInput style={styles.input}
+            onChangeText={setInput}
+            value={AnswerInput}
+            placeholder= 'quem é este?'
+            />
+            <TouchableHighlight id='guess' onPress={CheckGuess}>
+                <View style={styles.btn}>
+                    <Text>ADIVINHE</Text>
+                </View>
+            </TouchableHighlight>
+            <TouchableHighlight id='next' onPress={ChangeChar}>
+                <View style={styles.btn2}>
+                    <Text>PRÓXIMO</Text>
+                </View>
+            </TouchableHighlight>
         </View>   
     );
 }
