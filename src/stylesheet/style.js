@@ -39,8 +39,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#1c1c1c',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        height: '30%',
-        width: '95%'
+        height: '25%',
+        width: '95%',
+        borderRadius: 5,
+        alignItems: 'center'
     },
     img: {
         width: 300,
